@@ -1,8 +1,11 @@
 # Table of contents
-* [Nothing Important]
+* Test
     * [Initial page](README.md)
     * [first_md](first_attempt.md)
-* CNN_JPEG
-    * [Questions](questions.md)
+* JPEG and Nerual Network
+    * [Questions](progress.md)
     * [TodoList](todo.md)
+* Findings
+    * [Why inconsistensy in backward propagation (pytorch)? ](pytorch_backward.md)
+    * 
 
