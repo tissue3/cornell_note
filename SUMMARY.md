@@ -3,7 +3,6 @@
 * [Introduction](README.md)
 * [Test](Test/readme.md)
   * [Initial page](Test/first_attempt.md)
-  * [first\_md](Test/first_md.md)
 * [JPEG and Neural Network](JpegNN/README.md)
   * [Progress](JpegNN/progress.md)
   * [TodoList](JpegNN/todo.md)
