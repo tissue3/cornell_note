@@ -1,10 +1,12 @@
 # Table of contents
-* Test
-    * [Initial page](README.md)
-    * [first_md](first_attempt.md)
-* JPEG and Neural Network
-    * [Progress](progress.md)
-    * [TodoList](todo.md)
-* Findings
-    * [Why inconsistensy in backward propagation (pytorch)? ](pytorch_backward.md)
+
+* [Introduction](README.md)
+* [Test](test/README.md)
+  * [Initial page](test/readme.md)
+  * [first\_md](test/first_md.md)
+* [JPEG and Neural Network](jpeg-and-neural-network/README.md)
+  * [Progress](jpeg-and-neural-network/progress.md)
+  * [TodoList](jpeg-and-neural-network/todolist.md)
+* [Findings](findings/README.md)
+  * [Why inconsistensy in backward propagation \(pytorch\)?](findings/why-inconsistensy-in-backward-propagation-pytorch.md)
 
