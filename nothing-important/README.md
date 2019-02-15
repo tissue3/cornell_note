@@ -1,2 +1,2 @@
-# \[Nothing Important\]
+# Nothing Important
 
