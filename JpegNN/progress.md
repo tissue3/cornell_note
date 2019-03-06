@@ -63,4 +63,56 @@ This document is to record things progress
   - Make quantize matrix and input in the range of 0 and 1, for training
     - By default, input is in the range of 0 and 1
 
+
+### March 6
+
+- Experiments on compression ratio versus certain quality (quantization table), original file size is (150582 bytes)
+
+  - Code can be check here: https://github.com/cucapra/JpegNN/tree/master/src/compressRatio (zigzag, dc ac component, huffman)
+
+  - The compression rate is stable for certian qtable. We can therefore train our own qtables (which should also gives similar plot).
+
+  | quality = 20, mean = 3000 bytes, 5x comp  | quality = 50, mean = 50000 bytes, 3x comp |
+  | ----------------------------------------- | ----------------------------------------- |
+  | <img src=figures/quality20.png width=350> | <img src=figures/quality50.png width=350> |
+
+- Experiment setup
+
+  - Dataset: __3 classes, 1384 for training and 142 for validating__. 
+    - *We find datasets should have the same number of files in each class, otherwise the result is not reproducable. (Is the validation data too small?)*
+  - __25 epochs__
+    - Usually overfitting since the 15th epoches (train Acc > val Acc)
+  - __Resnet__
+
+- Experiments conducted to see: (a) If the *Compression Leading to Acc Loss* problem exists. (b) If the problem exists, can we design better qtable with same compression rate but higher/same accuracy?
+
+  - Train and val cnn with different quality (10:10:100).
+  - Train cnn only with uncompressed image and val cnn with different quality (10:10:100).
+  - Train cnn only with different quality (10:10:100) and test with uncompress image.
+  - Train qtable and cnn together with regularization (10 times to ensure reproducable results).
+
 - 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
