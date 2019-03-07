@@ -76,22 +76,38 @@ This document is to record things progress
   | ----------------------------------------- | ----------------------------------------- |
   | <img src=figures/quality20.png width=350> | <img src=figures/quality50.png width=350> |
 
-- Experiment setup
+- Experiments are conducted to see: (a) If the *Compression Leading to Acc Loss* problem exists? (b) If the problem exists, can we design better qtable with same compression rate but higher/same accuracy?
 
-  - Dataset: __3 classes, 1384 for training and 142 for validating__. 
-    - *We find datasets should have the same number of files in each class, otherwise the result is not reproducable. (Is the validation data too small?)*
-  - __25 epochs__
-    - Usually overfitting since the 15th epoches (train Acc > val Acc)
-  - __Resnet__
+  - Setup:
+    - __Dataset of 3 classes, 1384 for training and 142 for validating__. *Is the validation data too small?*
+    - __25 epochs__
+    - __Resnet__
+    - __1/ L1 Regularization, 0.5 factor__
 
-- Experiments conducted to see: (a) If the *Compression Leading to Acc Loss* problem exists. (b) If the problem exists, can we design better qtable with same compression rate but higher/same accuracy?
+  - 4 experiments (Check https://github.com/cucapra/JpegNN/tree/master/result for detail):
 
-  - Train and val cnn with different quality (10:10:100).
-  - Train cnn only with uncompressed image and val cnn with different quality (10:10:100).
-  - Train cnn only with different quality (10:10:100) and test with uncompress image.
-  - Train qtable and cnn together with regularization (10 times to ensure reproducable results).
+    - quality_noft* = Train and val cnn with different quality (10:10:100).
+    - *test_quality* = Train cnn only with uncompressed image and val cnn with different quality(10:10:100). Trained cnn has an accuracy of 96.4%
+    - *train_quality* = Train cnn only with different quality (10:10:100) and val with uncompress image.
+    - *jpeg_noft* = Train qtable and cnn together with regularization (10 times to ensure reproducable results).
 
-- 
+    <img src=figures/quality.png width=350 width=350> <img src=figures/jpeg.png width=350 width=350>
+
+  - I pick the qtable of first trail and plot the histogram. (This one! https://github.com/cucapra/JpegNN/blob/master/result/qtables/qtable_my1.txt)
+
+  <img src=figures/my_jpeg_comp.png width=350 width=350>
+
+- Issues:
+
+  - Not large accuracy differences between low quality and high quality(variation of 94 to 96). Perhaps we can use larger validation set.
+
+  - Validation uses qtable as integer, which opens a gap between training and validation accuracy. Sometimes we have 0.33 accuarcy for validation. Do we truly need integer qtable?
+
+    - Typical print: https://github.com/cucapra/JpegNN/blob/master/result/jpeg_noft/jpeg_noft3
+
+    - A typical qtable that fails is shown in https://github.com/cucapra/JpegNN/blob/master/result/qtables/qtable_fail.txt
+
+
 
 
 
