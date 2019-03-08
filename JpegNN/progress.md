@@ -93,19 +93,27 @@ This document is to record things progress
 
     <img src=figures/quality.png width=350 width=350> <img src=figures/jpeg.png width=350 width=350>
 
-  - I pick the qtable of first trail and plot the histogram. (This one! https://github.com/cucapra/JpegNN/blob/master/result/qtables/qtable_my1.txt)
+  - I pick the qtable of first trail and plot the histogram. It seems possible to get a 96% accuracy with 5x compression. (This one! https://github.com/cucapra/JpegNN/blob/master/result/qtables/qtable_my1.txt)
 
-  <img src=figures/my_jpeg_comp.png width=350 width=350>
+  <img src=figures/trail1.png width=300><img src=figures/my_jpeg_comp.png width=400>
 
 - Issues:
 
-  - Not large accuracy differences between low quality and high quality(variation of 94 to 96). Perhaps we can use larger validation set.
+  - Not large accuracy differences between low quality and high quality(variation of 94 to 96). Taining with low quality data can fix everything.
+
+    - Perhaps we can use larger validation set.
+    - Or solve the test-quality issue: train a network with high quality images, but testing get affected. (But why not just train with low quality images)
+    - Change to other topics, not image classification
 
   - Validation uses qtable as integer, which opens a gap between training and validation accuracy. Sometimes we have 0.33 accuarcy for validation. Do we truly need integer qtable?
 
     - Typical print: https://github.com/cucapra/JpegNN/blob/master/result/jpeg_noft/jpeg_noft3
 
     - A typical qtable that fails is shown in https://github.com/cucapra/JpegNN/blob/master/result/qtables/qtable_fail.txt
+
+      | Failed when we quantize qtable | Meaningful results              |
+      | ------------------------------ | ------------------------------- |
+      | ![fail](figures/fail.png)      | ![fail](figures/meaningful.png) |
 
 
 
