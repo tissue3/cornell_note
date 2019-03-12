@@ -8,4 +8,5 @@
   * [TodoList](JpegNN/todo.md)
 * [Findings](Findings/README.md)
   * [Why inconsistensy in backward propagation \(pytorch\)?](Findings/pytorch\_backward.md)
+  * [GOMP_4.0 not found](Findings/pytorch\_version.md)
 
