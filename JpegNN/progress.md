@@ -102,7 +102,7 @@ This document is to record things progress
   - Not large accuracy differences between low quality and high quality(variation of 94 to 96). Taining with low quality data can fix everything.
 
     - Perhaps we can use larger validation set.
-    - Or solve the test-quality issue: train a network with high quality images, but testing get affected. (But why not just train with low quality images)
+    - Or solve the test-quality issue: train a network with high quality images, but testing get affected. (But why not just train with low quality images? How about fine tunning?) 
     - Change to other topics, not image classification
 
   - Validation uses qtable as integer, which opens a gap between training and validation accuracy. Sometimes we have 0.33 accuarcy for validation. Do we truly need integer qtable?
@@ -114,6 +114,52 @@ This document is to record things progress
       | Failed when we quantize qtable | Meaningful results              |
       | ------------------------------ | ------------------------------- |
       | ![fail](figures/fail.png)      | ![fail](figures/meaningful.png) |
+
+### March 27
+
+- Semantic segmentation for MIT ADE20K dataset, encoder resnet50dilated, decoder ppm_deepsup, epoch 20.
+
+  -  No fake uncompression: a) downsampling cannot simulate uncomp; b) annotation becomes tricky; c) by default, the input get [random scaled](https://github.com/CSAILVision/semantic-segmentation-pytorch/blob/master/train.py#L265), why.
+
+   ![orig](figures/orig.png)
+
+  | jpeg, quality 20                       | Jpeg, quality = 20                     |
+  | -------------------------------------- | -------------------------------------- |
+  | 62.5%                                  | 53.6%                                  |
+  | <img src=figures/uncomp.png width=350> | <img src=figures/jpeg20.png width=350> |
+
+- Classification
+
+  - Compression rate difference between uncompressed image and fake uncompressed images (resnet, epoche = 25, 1/L1 regularization, factor = 0.1, different dataset <font size="2">**tricky**</font>).
+
+    |         | uncomp (3 classes)         | fake uncomp (40 classes)     |
+    | ------- | -------------------------- | ---------------------------- |
+    | jpeg 20 | 30000 bits, 5x compression | 60000 bits, 2.5x compression |
+    | my jpeg | 30000 bits, 5x compression | 77000 bits, 2x compression   |
+
+  - Observations 
+
+    - The gap of 2 times compression rate difference is too large. Fake uncompression make not be a good approximate for uncompressed image, especially when our focus is compression rate. 
+    - Quantization table may differ from application to application (my jpeg on different classification tasks). 
+
+- Design questions
+  - How to initialize?
+    - Initialize with standard qtable and random value. The performance of the latter is really bad. [Here](https://github.com/cucapra/JpegNN/blob/master/result/qtable_rq10) is the training result of 3 classes classification task. 
+  - How to design regularization term? 
+    - Observe the change of qtable of same initialization: a) All terms increases and then the first frequency component increase slower and then decreases. Then second terms b) Chrominance and illuminance differences.
+    - 1/L1 regularization may not simulate compression rate well. Integrate compression step? Will batch size change the behavior of training?
+  - What if the high frequency component hypoysis is wrong?
+    - Train with fixed cnn and observe the behavior of qtable. It always decreases from high frequency components!
+
+
+
+
+
+
+
+
+
+
 
 
 
