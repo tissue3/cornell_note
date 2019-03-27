@@ -121,7 +121,7 @@ This document is to record things progress
 
   -  No fake uncompression: a) downsampling cannot simulate uncomp; b) annotation becomes tricky; c) by default, the input get [random scaled](https://github.com/CSAILVision/semantic-segmentation-pytorch/blob/master/train.py#L265), why.
 
-   ![orig](figures/orig.png)
+   !<img src=figures/orig.png width=7050>
 
   | jpeg, quality 20                       | Jpeg, quality = 20                     |
   | -------------------------------------- | -------------------------------------- |
@@ -146,9 +146,9 @@ This document is to record things progress
   - How to initialize?
     - Initialize with standard qtable and random value. The performance of the latter is really bad. [Here](https://github.com/cucapra/JpegNN/blob/master/result/qtable_rq10) is the training result of 3 classes classification task. 
   - How to design regularization term? 
-    - Observe the change of qtable of same initialization: a) All terms increases and then the first frequency component increase slower and then decreases. Then second terms b) Chrominance and illuminance differences.
-    - 1/L1 regularization may not simulate compression rate well. Integrate compression step? Will batch size change the behavior of training?
-  - What if the high frequency component hypoysis is wrong?
+    - Observe the change of qtable of same initialization: a) All terms increases and then the first frequency component increase slower and then decreases. In zig-zag manner, 2-3 then get affectedm, and then 4-6. b) Chrominance and illuminance differences.
+    - 1/L1 regularization may not simulate compression rate well. Integrate compression? Will batch size change the behavior of training?
+  - What if the high frequency component hypothesis is wrong?
     - Train with fixed cnn and observe the behavior of qtable. It always decreases from high frequency components!
 
 
