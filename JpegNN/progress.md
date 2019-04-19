@@ -72,9 +72,9 @@ This document is to record things progress
 
   - The compression rate is stable for certian qtable. We can therefore train our own qtables (which should also gives similar plot).
 
-  | quality = 20, mean = 3000 bytes, 5x comp  | quality = 50, mean = 50000 bytes, 3x comp |
-  | ----------------------------------------- | ----------------------------------------- |
-  | <img src=figures/quality20.png width=350> | <img src=figures/quality50.png width=350> |
+  | quality = 20, mean = 21000 bytes, 7.5x comp | quality = 50, mean = 40000 bytes, 3.7x comp |
+  | ------------------------------------------- | ------------------------------------------- |
+  | <img src=figures/jenna20.png width=350>     | <img src=figures/jenna50.png width=350>     |
 
 - Experiments are conducted to see: (a) If the *Compression Leading to Acc Loss* problem exists? (b) If the problem exists, can we design better qtable with same compression rate but higher/same accuracy?
 
@@ -95,7 +95,7 @@ This document is to record things progress
 
   - I pick the qtable of first trail and plot the histogram. It seems possible to get a 96% accuracy with 5x compression. (This one! https://github.com/cucapra/JpegNN/blob/master/result/qtables/qtable_my1.txt)
 
-  <img src=figures/trail1.png width=300><img src=figures/my_jpeg_comp.png width=400>
+  <img src=figures/trail1.png width=300><img src=figures/my_jpeg_comp.png width=400><span style="color:red">wrong</span>.
 
 - Issues:
 
@@ -132,10 +132,10 @@ This document is to record things progress
 
   - Compression rate difference between uncompressed image and fake uncompressed images (resnet, epoche = 25, 1/L1 regularization, factor = 0.1, different dataset <font size="2">**tricky**</font>).
 
-    |         | uncomp (3 classes)         | fake uncomp (40 classes)     |
-    | ------- | -------------------------- | ---------------------------- |
-    | jpeg 20 | 30000 bits, 5x compression | 60000 bits, 2.5x compression |
-    | my jpeg | 30000 bits, 5x compression | 77000 bits, 2x compression   |
+    |            | uncomp (jenna)               | fake uncomp (comp jenna, down sample) |
+    | ---------- | ---------------------------- | ------------------------------------- |
+    | jpeg 20    |                              |                                       |
+    | my jpeg 20 | 21000 bits, 7.5x compression | 7300 bits, 5x compression             |
 
   - Observations 
 
@@ -151,7 +151,25 @@ This document is to record things progress
   - What if the high frequency component hypothesis is wrong?
     - Train with fixed cnn and observe the behavior of qtable. It always decreases from high frequency components!
 
+###April 12
 
+- Compressed file size vs. $\sum_{i=0}^{63} F_{i} / Q_{i}$
+
+  <img src=figures/rate_qtable.png width=350>
+
+- Fixing some error or system problem: 
+
+  - remove abs in normalization
+
+  - Strip unit test shows that python is bad when precision is too high. The solution I give is to mask $std <10^{-5}$ components to zero.
+
+  - Setting training rate to 0.01 fix 96% accuracy problem. Setting regularization factor to 0.3 gives 96.5% accuracy (as good as without jpeg). Setting regularizaiton factor to 1 gives 95.3% accuracy, and the compressed figure looks quite different.
+
+    <img src=figures/trained_qtable_factor_0.1.jpg >
+
+- Problems:
+  - Cannot reproduce > 90% accuracy result without pretrained model. I hope it is initialized without pretrained parameter since the starting point may affect where qtable converges to.
+  - Checkerboad exam shows it's hard to distinguish "importance" of qtable non-zero terms, no magnitude difference.
 
 
 
