@@ -161,25 +161,53 @@ This document is to record things progress
 
   - remove abs in normalization
 
-  - Strip unit test shows that python is bad when precision is too high. The solution I give is to mask $std <10^{-5}$ components to zero.
+  - Strip unit test shows that python is bad when precision is too high. The solution I give is to mask $std <10^{-5}$ components to zero. (change to mean of absolute value)
 
-  - Setting training rate to 0.01 fix 96% accuracy problem. Setting regularization factor to 0.3 gives 96.5% accuracy (as good as without jpeg). Setting regularizaiton factor to 1 gives 95.3% accuracy, and the compressed figure looks quite different.
+  - Setting training rate to 0.01 fix 96% accuracy problem. Setting regularization factor to 0.05 gives 96.0% accuracy (as good as without jpeg). Mask lower half of the qtable gives 95.5% accuarcy. Setting regularizaiton factor to 0.3 gives 95.3% accuracy, and the compressed figure looks quite different.
 
     <img src=figures/trained_qtable_factor_0.1.jpg >
 
 - Problems:
-  - Cannot reproduce > 90% accuracy result without pretrained model. I hope it is initialized without pretrained parameter since the starting point may affect where qtable converges to.
-  - Checkerboad exam shows it's hard to distinguish "importance" of qtable non-zero terms, no magnitude difference.
+  - Cannot reproduce > 90% accuracy result without pretrained model. I hope it is initialized without pretrained parameter since the starting point may affect where qtable converges to. (train with simple model)
+  - Checkerboard exam shows it's hard to distinguish "importance" of qtable non-zero terms, no magnitude difference. (explain checkerboard; )
 
 
 
+###April 24
 
+- To know if current network is able to learn the importance of qtable, we need to test with specific dataset.
+  - One way to do this is to create a 8x8 frequency table as DCT of some input 8x8 pixels, where only the center 4x4 pixels are a) vertically b) horizontally increasing. Other pixels are uniformly random.
+  - However, it turns out applying inverse dct to randomly generated frequency cannot produce pixels in the range of 0 to 255. Shifting and scaling the pixels doesn't work. It will change the frequency distribution.
+  - The other approach I tried was to randomly generate 8x8 pixels, transform them to 8x8 frequency table. Then sorting the center 4x4 frequencies and use inverse dctII to transform them back and round to integers. I also do the dctII transformation to verify if see if integers round keeps sorting, and they are just normal.
 
+- | Setup (10 epoches)                                           | Accuracy |
+  | ------------------------------------------------------------ | -------- |
+  | mask frequency except 4x4 center frequencies, no normalization | 100%     |
+  | mask frequency except 4x4 center frequencies, with normalization | 99.5%    |
+  | no masking, no normalization (qtable seems random)           | 97.5%    |
+  | no masking, with normalization (qtable seems random)         | 96.5%    |
+  | quatization table fxied, no masking                          | 99.5%    |
+  | without regularization, start with medium level qtable, learn center convergence rate |          |
 
+- look at math work! with simple network (jpeg layer + linear layer)
 
+### June 10th
 
+- Fixed point
 
+  - word length :word length of each fixed point number
+  - floating length:  fractional length of each fixed point number
 
+- Floating point
+
+  - mantissa: a signed (meaning positive or negative) digit string of a given length in a given base.
+
+  - exponent: the magnitude of the number.
+
+|            | exp = 5, man = 2 | exp = 2, man = 1 |
+| ---------- | ---------------- | ---------------- |
+| nearest    | 94.6%            | 91.0%            |
+| stochastic | 94.7%            | 92.5%            |
 
 
 
