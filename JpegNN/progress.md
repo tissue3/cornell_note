@@ -163,7 +163,7 @@ This document is to record things progress
 
   - Strip unit test shows that python is bad when precision is too high. The solution I give is to mask $std <10^{-5}$ components to zero. (change to mean of absolute value)
 
-  - Setting training rate to 0.01 fix 96% accuracy problem. Setting regularization factor to 0.05 gives 96.0% accuracy (as good as without jpeg). Mask lower half of the qtable gives 95.5% accuarcy. Setting regularizaiton factor to 0.3 gives 95.3% accuracy, and the compressed figure looks quite different.
+  - Setting training rate to 0.001 fix 96% accuracy problem. Setting regularization factor to 0.05 gives 96.0% accuracy (as good as without jpeg). Mask lower half of the qtable gives 95.5% accuarcy. Setting regularizaiton factor to 0.3 gives 95.3% accuracy, and the compressed figure looks quite different.
 
     <img src=figures/trained_qtable_factor_0.1.jpg >
 
@@ -209,7 +209,20 @@ This document is to record things progress
 | nearest    | 94.6%            | 91.0%            |
 | stochastic | 94.7%            | 92.5%            |
 
+- Limited knowledge we can borrow from qpytorch:
 
+  - double *ldexp*(double value, int exp); //return $value*2^{exp}$
+
+  - [nearest_round(a[index], sigma);](<https://github.com/Tiiiger/QPyTorch/blob/ca227d9e8827dd77d4eb59f21c70d422f8ac6e51/qtorch/quant/quant_cuda/fixed_point_kernel.cu#L41-L54>)
+
+    ```c++
+    __device__ __forceinline__ float nearest_round(float a, int sigma) {
+      a = ldexp(a, -sigma); 
+      a = round(a);
+      a = ldexp(a, sigma);
+      return a;
+    }
+    ```
 
 
 
