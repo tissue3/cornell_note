@@ -224,11 +224,19 @@ This document is to record things progress
     }
     ```
 
+- Adaptive quantization of neural networks (no source code, sad)
 
+  - It generalizes quantization problem: 
 
+    ​	$$\min \limits_{W} N_Q(W) = 􏰆\sum N_q(ω_i)$$
 
+    ​	$$L(W ) ≤ \overline{l} $$
 
+    where $N_q(ω_i)$ is the minimum number of bits required to represent $ω_i$ in its fixed-point format.
 
+  - Given $ω_i q ← round(2^{N_q^i} ω_i)/2^{N_q^i}$ (assuming $w_i \in (0,1)$), it can be deduced that $N_Q(W) \leq -\sum^n_{i=1} log_2 \tau_i $
+
+  - Under specific loss function, we can solve $\tau$ with KTT conditions and the learn $N_Q(W)$. (The only problem is I don't fully understand the proof start from KTT condition...)
 
 
 
