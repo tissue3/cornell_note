@@ -238,9 +238,11 @@ This document is to record things progress
 
   - Under specific loss function, we can solve $\tau$ with KTT conditions and the learn $N_Q(W)$. (The only problem is I don't fully understand the proof start from KTT condition...)
 
-
-
-
+- Relaxed quantization for discretized neural network
+  - Algorithm 1 is currently being tested. I understand each step, except where to deduce $\epsilon$.
+  - ![image-20190617223007683](/Users/Cindy/Documents/Note/JpegNN/figures/algorithm.png)
+  - It is workable (visualization seems fine) for the first few trails and get nan soon.
+  - How to develop unit test...
 
 
 
