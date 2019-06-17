@@ -240,7 +240,7 @@ This document is to record things progress
 
 - Relaxed quantization for discretized neural network
   - Algorithm 1 is currently being tested. I understand each step, except where to deduce $\epsilon$.
-  - ![image-20190617223007683](/Users/Cindy/Documents/Note/JpegNN/figures/algorithm.png)
+  - ![algorithm](figures/algorithm.png)
   - It is workable (visualization seems fine) for the first few trails and get nan soon.
   - How to develop unit test...
 
