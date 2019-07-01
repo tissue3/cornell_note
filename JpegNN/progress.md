@@ -260,7 +260,7 @@ This document is to record things progress
 
   - Training and testing outputs very different jpeg.
 
-    <img src=figures/LQtest.jpg > <img src=figures/LQtrain.jpg >
+    <img src= figures/LQtest.jpg > <img src= figures/LQtrain.jpg >
 
   - Hard to tell differences between training alpha or without alpha.
 
