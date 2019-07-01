@@ -252,7 +252,7 @@ This document is to record things progress
 
   - Why $$\sum z_i g_i$$ gives the original value?
 
-  - $\sigma$: The meaning for the value. Set to $$\alpha / 3$$ all the time or only at initialization.
+  - $$\sigma$$: The meaning for the value. Set to $$\alpha / 3$$ all the time or only at initialization.
 
   - Resizing: statically (no need for extra storage things when recover) or danamically.
 
