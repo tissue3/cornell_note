@@ -95,7 +95,7 @@ This document is to record things progress
 
   - I pick the qtable of first trail and plot the histogram. It seems possible to get a 96% accuracy with 5x compression. (This one! https://github.com/cucapra/JpegNN/blob/master/result/qtables/qtable_my1.txt)
 
-  <img src=figures/trail1.png width=300><img src=figures/my_jpeg_comp.png width=400><span style="color:red">wrong</span>.
+  <img src=figures/my_jpeg_comp.png width=400><span style="color:red">wrong</span>.
 
 - Issues:
 
@@ -244,6 +244,31 @@ This document is to record things progress
   - It is workable (visualization seems fine) for the first few trails and get nan soon.
   - How to develop unit test...
 
+### July 1st 
+
+- Question about the algorithm
+
+  - $r$ is $[- 2^b - 0.5, ..., 2^b - 0.5]$. It is not symmetric. Why?
+
+  - Why $\sum z_i g_i$ gives the original value?
+
+  - $\sigma$: The meaning for the value. Set to $\alpha / 3$ all the time or only at initialization.
+
+  - Resizing: statically (no need for extra storage things when recover) or danamically.
+
+  - When bandwidth $b$ is small enough (e.g. 2), it gives a lot of grids with black frame.
+
+  - Training and testing outputs very different jpeg.
+
+    <img src=figures/LQtest.jpg > <img src=figures/LQtrain.jpg >
+
+  - Hard to tell differences between training alpha or without alpha.
+
+    | bits # | train Jpeg | train cnn only |
+    | ------ | ---------- | -------------- |
+    | 8      | 95.8%      |                |
+    | 5      | 95.5%      | 95.8%          |
+    | 3      | 87.5%      | 86.6%          |
 
 
 
