@@ -165,7 +165,7 @@ This document is to record things progress
 
   - Setting training rate to 0.001 fix 96% accuracy problem. Setting regularization factor to 0.05 gives 96.0% accuracy (as good as without jpeg). Mask lower half of the qtable gives 95.5% accuarcy. Setting regularizaiton factor to 0.3 gives 95.3% accuracy, and the compressed figure looks quite different.
 
-    <img src=figures/trained_qtable_factor_0.1.jpg >
+    <img src="figures/trained_qtable_factor_0.1.jpg" >
 
 - Problems:
   - Cannot reproduce > 90% accuracy result without pretrained model. I hope it is initialized without pretrained parameter since the starting point may affect where qtable converges to. (train with simple model)
@@ -260,7 +260,7 @@ This document is to record things progress
 
   - Training and testing outputs very different jpeg.
 
-    <img src= figures/LQtest.jpg > <img src= figures/LQtrain.jpg >
+    <img src="figures/LQtest.jpg" > <img src= figures/LQtrain.jpg >
 
   - Hard to tell differences between training alpha or without alpha.
 
