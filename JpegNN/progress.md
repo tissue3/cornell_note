@@ -258,6 +258,8 @@ This document is to record things progress
 
   - When bandwidth $$b$$ is small enough (e.g. 2), it gives a lot of grids with black frame.
 
+    <img src="figures/black_frame.jpg" >
+
   - Training and testing outputs very different jpeg.
 
     <img src="figures/LQtest.jpg" > <img src="figures/LQtrain.jpg">
