@@ -248,19 +248,19 @@ This document is to record things progress
 
 - Question about the algorithm
 
-  - $r$ is $[- 2^b - 0.5, ..., 2^b - 0.5]$. It is not symmetric. Why?
+  - $$r is $$$$[- 2^b - 0.5, ..., 2^b - 0.5]$$. It is not symmetric. Why?
 
-  - Why $\sum z_i g_i$ gives the original value?
+  - Why $$\sum z_i g_i$$ gives the original value?
 
-  - $\sigma$: The meaning for the value. Set to $\alpha / 3$ all the time or only at initialization.
+  - $\sigma$: The meaning for the value. Set to $$\alpha / 3$$ all the time or only at initialization.
 
   - Resizing: statically (no need for extra storage things when recover) or danamically.
 
-  - When bandwidth $b$ is small enough (e.g. 2), it gives a lot of grids with black frame.
+  - When bandwidth $$b$$ is small enough (e.g. 2), it gives a lot of grids with black frame.
 
   - Training and testing outputs very different jpeg.
 
-    <img src="figures/LQtest.jpg" > <img src= figures/LQtrain.jpg >
+    <img src="figures/LQtest.jpg" > <img src="figures/LQtrain.jpg">
 
   - Hard to tell differences between training alpha or without alpha.
 
