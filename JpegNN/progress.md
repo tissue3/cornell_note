@@ -250,7 +250,7 @@ This document is to record things progress
 
   - $$r $$ is $$[- 2^b - 0.5, ..., 2^b - 0.5]$$. It is not symmetric. Why?
 
-  - Why $$\sum z_i g_i​$$ gives the original value?
+  - Why $$\sum z_i g_i$$ gives the original value?
 
   - $$\sigma$$: The meaning for the value. Set to $$\alpha / 3$$ all the time or only at initialization.
 
@@ -271,6 +271,14 @@ This document is to record things progress
     | 8      | 95.8%      |                |
     | 5      | 95.5%      | 95.8%          |
     | 3      | 87.5%      | 86.6%          |
+
+### July 16th 
+
+- We look at the eplorable space and find with sorted or little pertubed jpeg, we can "better" compression rate given the same accuracy. It's a good indication that there is a lot more space for qtable designers.
+
+  <img src="figures/rate_acc.png" >
+
+
 
 
 
