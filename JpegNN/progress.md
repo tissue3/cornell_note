@@ -274,7 +274,7 @@ This document is to record things progress
 
 ### July 16th 
 
-- We look at the eplorable space and find with sorted or little pertubed jpeg, we can "better" compression rate given the same accuracy. It's a good indication that there is a lot more space for qtable designers.
+- We look at the deplorable space and find with sorted or little perturbed jpeg, we can "better" compression rate given the same accuracy. It's a good indication that there is a lot more space for qtable designers.
 
   <img src="figures/rate_acc.png" >
 
