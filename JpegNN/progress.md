@@ -278,7 +278,10 @@ This document is to record things progress
 
   <img src="figures/rate_acc.png" >
 
-
+- Problems:
+  - Choice of algorithm
+  - Runtime 
+  - Objective function: 1/(comp_rate*acc) does not reflect a curve, but a point
 
 
 
