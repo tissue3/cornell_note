@@ -283,7 +283,11 @@ This document is to record things progress
   - Runtime 
   - Objective function: 1/(comp_rate*acc) does not reflect a curve, but a point
 
+### July 31th 
 
+- Let's switch to Object Detection, since the dataset is designed for it. Before that, I am doubting about the compression rate we get though. The graph may indicate that the optimal points on the previous result will change with different dataset.
+
+  <img src="figures/variance_of_comp.png" >
 
 
 
