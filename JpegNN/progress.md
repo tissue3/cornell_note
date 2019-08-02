@@ -289,7 +289,7 @@ This document is to record things progress
 
   <img src="figures/variance_of_comp.png" >
 
-- Actually, when the figure is large, compression may not affect the learning accuracy in the sense that 8 by 8 blocks does not affect overview for an image that large. (I see some partial experiment results and therefore draw such conclusion. The experiment results will be posted after all data are processed).
+- Actually, when the figure is large, compression may not affect the learning accuracy in the sense that 8 by 8 blocks does not affect overview for an image that large. (I see some partial experiment results and therefore draw such conclusion. The experiment results will be posted after all data are processed.)
 
   | quality 5                         | quality 15                         | quality 30                         |
   | --------------------------------- | ---------------------------------- | ---------------------------------- |
