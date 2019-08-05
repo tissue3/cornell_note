@@ -289,14 +289,20 @@ This document is to record things progress
 
   <img src="figures/variance_of_comp.png" >
 
-- Actually, when the figure is large, compression may not affect the learning accuracy in the sense that 8 by 8 blocks does not affect overview for an image that large. (I see some partial experiment results and therefore draw such conclusion. The experiment results will be posted after all data are processed.)
+- Actually, when the figure is large, compression may not affect the learning accuracy in the sense that 8 by 8 blocks does not affect overview for an image that large (6000by4000pixels). We didn't noticed the problem for classification because I compressed the data has already been [downsampled](https://github.com/cucapra/CNNJPEG/blob/master/imageAugmentation.py#L84).
+
+  - Standard jpeg comrpessed image for object detection.
+  
+    <img src="figures/standard.png" >
+
+  - Virtualisation for jpeg with different quality factor:
 
   | quality 5                         | quality 15                         | quality 30                         |
   | --------------------------------- | ---------------------------------- | ---------------------------------- |
   | <img src="figures/quality5.jpg" > | <img src="figures/quality15.jpg" > | <img src="figures/quality30.jpg" > |
-
   
-
+  
+  
   
 
 
