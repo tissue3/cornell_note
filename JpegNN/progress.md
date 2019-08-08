@@ -312,14 +312,16 @@ This document is to record things progress
 
   - It seems compression rate is most likely to simulates a [skewed normal distribution](https://en.wikipedia.org/wiki/Skew_normal_distribution), though I don't fully understand mean and variance here.
 
+  - Another concern is it's hard to do cross validation/ bucket test for ImagenetV2 since it only has 10 images in each class.
+  
     | ImageNetV2 (jpeg)                   | quality 10                              | quality 15                              |
-    | ----------------------------------- | --------------------------------------- | --------------------------------------- |
+  | ----------------------------------- | --------------------------------------- | --------------------------------------- |
     | <img src="figures/uncmp_dist.png" > | <img src="figures/quality10_dist.png" > | <img src="figures/quality15_dist.png" > |
 
     
 
   - Also, for ImageNetV2 with different input scales, we would like to use jpeg size as baseline. This well simulates the real situation that  bmp is not a usual storage method for neural network datasets.
-
+  
     <img src="figures/bmp_dist.png" >
 
 
