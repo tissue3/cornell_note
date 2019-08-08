@@ -289,7 +289,7 @@ This document is to record things progress
 
   <img src="figures/variance_of_comp.png" >
 
-- Actually, when the figure is large, compression may not affect the learning accuracy in the sense that 8 by 8 blocks does not affect overview for an image that large (6000by4000pixels). We didn't noticed the problem for classification because I compressed the data has already been [downsampled](https://github.com/cucapra/CNNJPEG/blob/master/imageAugmentation.py#L84).
+- Actually, when the figure is large, compression may not affect the learning accuracy in the sense that 8 by 8 blocks does not affect overview for an image that large (6000by4000pixels). We didn't noticed the problem for classification because I compressed the data has already been [downsampled](https://github.com/cucapra/CNNJPEG/blob/master/imageAugmentation.py#L84). 
 
   - Standard jpeg comrpessed image for object detection.
   
@@ -301,11 +301,26 @@ This document is to record things progress
   | --------------------------------- | ---------------------------------- | ---------------------------------- |
   | <img src="figures/quality5.jpg" > | <img src="figures/quality15.jpg" > | <img src="figures/quality30.jpg" > |
   
-  
+  - On one hand, compression itself doesn't makes a figure hard to distinguish, but downscaling along with compression does.
+  - On the other hand, to store a "small" image, compression is never enough. It could be an important factor though. Then I believe it is persuasive to play with the smaller images with a better resolution (600x400 pascalraw and imagenetv2) actually well simulates real database generation.
   
   
 
+### Aug 8th
 
+- Compression distribution
+
+  - It seems compression rate is most likely to simulates a [skewed normal distribution](https://en.wikipedia.org/wiki/Skew_normal_distribution), though I don't fully understand mean and variance here.
+
+    | ImageNetV2 (jpeg)                   | quality 10                              | quality 15                              |
+    | ----------------------------------- | --------------------------------------- | --------------------------------------- |
+    | <img src="figures/uncmp_dist.png" > | <img src="figures/quality10_dist.png" > | <img src="figures/quality15_dist.png" > |
+
+    
+
+  - Also, for ImageNetV2 with different input scales, we would like to use jpeg size as baseline. This well simulates the real situation that  bmp is not a usual storage method for neural network datasets.
+
+    <img src="figures/bmp_dist.png" >
 
 
 
