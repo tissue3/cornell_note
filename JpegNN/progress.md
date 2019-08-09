@@ -331,5 +331,7 @@ This document is to record things progress
 
   <img src="figures/imagenetv2_standard.png">
 
+  ​		<img src = "figures/errorbar_cmp_rate.png">
+
 
 
