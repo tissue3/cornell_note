@@ -292,7 +292,7 @@ This document is to record things progress
 - Actually, when the figure is large, compression may not affect the learning accuracy in the sense that 8 by 8 blocks does not affect overview for an image that large (6000by4000pixels). We didn't noticed the problem for classification because I compressed the data has already been [downsampled](https://github.com/cucapra/CNNJPEG/blob/master/imageAugmentation.py#L84). 
 
   - Standard jpeg comrpessed image for object detection.
-  
+
     <img src="figures/standard.png" >
 
   - Visualization for images compressed with different quality factors:
@@ -300,11 +300,10 @@ This document is to record things progress
   | quality 5                         | quality 15                         | quality 30                         |
   | --------------------------------- | ---------------------------------- | ---------------------------------- |
   | <img src="figures/quality5.jpg" > | <img src="figures/quality15.jpg" > | <img src="figures/quality30.jpg" > |
-  
+
   - On one hand, compression itself doesn't makes a figure hard to distinguish, but downscaling along with compression does.
   - On the other hand, to store a "small" image, compression is never enough. It could be an important factor though. Then I believe it is persuasive to play with the smaller images with a better resolution (600x400 pascalraw and imagenetv2) actually well simulates real database generation.
-  
-  
+
 
 ### Aug 8th
 
@@ -313,25 +312,36 @@ This document is to record things progress
   - It seems compression rate is most likely to simulates a [skewed normal distribution](https://en.wikipedia.org/wiki/Skew_normal_distribution), though I don't fully understand mean and variance here.
 
   - Another concern is it's hard to do cross validation/ bucket test for ImagenetV2 since it only has 10 images in each class. (Cropping?)
-  
+
     | ImageNetV2 (jpeg)                   | quality 10                              | quality 15                              |
-  | ----------------------------------- | --------------------------------------- | --------------------------------------- |
+    | ----------------------------------- | --------------------------------------- | --------------------------------------- |
     | <img src="figures/uncmp_dist.png" > | <img src="figures/quality10_dist.png" > | <img src="figures/quality15_dist.png" > |
 
-    
-
   - Also, for ImageNetV2 with different input scales, we would like to use jpeg size as baseline. This well simulates the real situation that  bmp is not a usual storage method for neural network datasets.
-  
+
     <img src="figures/bmp_dist.png" >
 
 - ImagenetV2 datasets - libjpeg compression rate vs. accuracy.
 
   - The compression rate is calculated based on (original .jpeg file sizes/compressed .jpg files sizes) due to the wild file size. Also, it is fair since in neural network applications, people only store images as PNG or JPEG files, not bmps. 
-  - Imagenet V2 is a nice dataset to work on due to the efficiency. However, we may not be able to do all the cross validations on accuracy.
+  - 
 
   <img src="figures/imagenetv2_standard.png">
 
-  ​		<img src = "figures/errorbar_cmp_rate.png">
+  ​		
+
+  - The compression rate doesn't variate a lot, though I need to check with chris later. Error bar calculation for compression rate:
+
+    ```python
+    uncmp_max = 60179+219
+    uncmp_min = 60179-219
+    var_max = uncmp_max/(df['mean']-df['std']/100)-df['comp rate']
+    var_min =-uncmp_min/(df['mean']+df['std']/100)+df['comp rate']
+    ```
+
+  - Imagenet V2 is a nice dataset to work on due to the efficiency. However, we may not be able to do all the cross validations on accuracy. 
+
+  <img src = "figures/imagenetv2_mean_std.png">
 
 
 
