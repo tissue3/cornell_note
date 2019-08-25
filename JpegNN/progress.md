@@ -343,5 +343,29 @@ This document is to record things progress
 
   <img src = "figures/imagenetv2_mean_std.png">
 
+### Aug 24th
+
+- After recreating the ImagenetV2 dataset from flickr API and generating our own sorted random qtables to compress them, it turns out that the random results are not necessarily better than standard jpeg which but can reaches to some place close.
+
+  - <img src = "figures/rate_acc_flickr.png">
+
+  - The MCMC results only degrades probabely because the table is changed each time by pure random number in the range [-step, step]. The chance of producing a better quantization table seems to be subtle.
+
+  - The genetic algorithm version 1 could reaches a point similiar to one standard jpeg point.
+
+    ​	$$(acc\_top1,acc\_top5, compression\_rate)=(0.4716,0.7016,40.97619689560313)$$. 
+
+    This is because the fitness function is simple set as $$Acc \cdot CompRate$$, while at the beginning the population is initialized by 15 sorted random qtables.
+
+  - In genetic algorithm version 2, I set fitness function as $$\frac{Rate}{f(Acc)}​$$ where $$f(Acc)​$$ is a cubic polynomial such that $$f(Acc) \approx Rate​$$. In this case, there are more interesting results, but not yet beating the standard qtable. 
+
+
+
+
+
+
+
+
+
 
 
