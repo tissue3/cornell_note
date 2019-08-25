@@ -357,7 +357,7 @@ This document is to record things progress
 
     This is because the fitness function is simple set as $$Acc \cdot CompRate$$, while at the beginning the population is initialized by 15 sorted random qtables.
 
-  - In genetic algorithm version 2, I set fitness function as $$\frac{Rate}{f(Acc)}​$$ where $$f(Acc)​$$ is a cubic polynomial such that $$f(Acc) \approx Rate​$$. In this case, there are more interesting results, but not yet beating the standard qtable. 
+  - In genetic algorithm version 2, I set fitness function as $$\frac{Rate}{f(Acc)}$$ where $$f(Acc)$$ is a cubic polynomial such that $$f(Acc) \approx Rate$$. In this case, the results form a curve rather than a single point, but not yet beating the standard qtable. 
 
 
 
