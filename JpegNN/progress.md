@@ -349,7 +349,7 @@ This document is to record things progress
 
   - <img src = "figures/rate_acc_flickr.png">
 
-  - The MCMC results only degrades probabely because the table is changed each time by pure random number in the range [-step, step]. The chance of producing a better quantization table seems to be subtle.
+  - The MCMC results only degrades probably because the table is changed each time by pure random number in the range [-step, step]. The chance of producing a better quantization table seems to be subtle.
 
   - The genetic algorithm version 1 could reaches a point similiar to one standard jpeg point.
 
@@ -359,11 +359,23 @@ This document is to record things progress
 
   - In genetic algorithm version 2, I set fitness function as $$\frac{Rate}{f(Acc)}$$ where $$f(Acc)$$ is a cubic polynomial such that $$f(Acc) \approx Rate$$. In this case, the results form a curve rather than a single point, but not yet beating the standard qtable. 
 
+### Aug 28th
 
+- Methods I tried so far:
+  - MCMC - randomly pick some coef of the Qtable and apply step function with random changes in the range of [-7,7]. Too few changes in the end, not any better than standard jpeg
+  - MCMC - randomly pick some coef of the Qtable to be the average of 5 values given a box [[0,1,0],[1,1,1],[0,1,0]]. Eventually they become one value, not any better than standard jpeg.
+  - GA - p% of parent1 and (1-p%) parent2. Gradually becomes the same Qtable.  No matter how many times I tried, GA always gradually converges one point after trials. 
 
+- Comments for GA.
+  - Usually at the starting point because the generated population is random, larger compression rate usually shows better results in terms of accuracy. Then no matter how we pick parent, these parents always have large compression rate. (How do we constrain the compression rate to be around 20? )
+  - There is also a reason for these easily generated Qtables that can produce large compression rate - low accuracy pair. Because when every coef of Qtable is large, most component of the 8x8 DCT block just get disappeared. It is easy to get small components rather than large ones. (Redesign *sorted_random_qtable_generate()* function!!!)
 
-
-
+- A Literature Review on Quantization Table Design for the JPEG Baseline Algorithm:
+  - Rate-Distortion Approach: may get struck at different local minimal
+  - Human Visual System Approach: not our topic
+  - Genetic Algorithm: a) normal GA should work, why mine doesn't. b) In *Identification of the best quantization table using genetic algorithms*, why didn't I see compression rate related computation when calculating fitness? c) Pareto dominance to plot a curve rather than a line, but the experiment cost could be huge. d) knowledge based GA (on crossover and mutation). e) Does it count to use/combine existing approachs? Are they too old (mostly before 2013, while the lastest KBGA is 2016)?
+  - Differential evolution is said to be better than GA, but how to get the paper?
+  - Particle Swarm Optimization, Fireflys
 
 
 
