@@ -11,3 +11,5 @@
   * [GOMP_4.0 not found](Findings/pytorch\_version.md)
   * [How to support parallel computing with constant tensor in a self-defined layer?](Findings/pytorch\_constant\_tensor.md)
 
+- [Seashell](SeaShell/README.md)
+  - [Review](SeaShell/Review.md)
