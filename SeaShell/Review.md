@@ -24,3 +24,12 @@
   - Why design principle belongs to section HLS vs Dahlia? Can we summarize with a table to learn the difference between HLS and dahlia?
 - 
 
+### Spatial
+
+- Resource usage.
+
+- There are some mechanism users cannot control due to automation. E.g. Spatial has its own banking decision. Users can only specify the unrolling factor. Dahlia is more transparant. It tries to generate designs following your instruction.
+
+- It turns out Spatial's banking decision is not great. See the abrupt increase of LUT given certain unrolling  (see DSP usage) and banking decision.
+
+- Even with perfect DSE tool, automation can only output one  point on pareto curve. Dahlia is trying to guide users to give possible designs on / close to pareto curve.
