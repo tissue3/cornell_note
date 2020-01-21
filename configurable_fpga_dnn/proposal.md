@@ -1,1 +1,0 @@
-{% pdf src="proposal.pdf", width="100%" %}{% endpdf %}
