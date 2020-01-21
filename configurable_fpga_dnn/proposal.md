@@ -1,0 +1,1 @@
+### ![DNN CONFIGURABLE FPGA](proposal.pdf){width=100%}

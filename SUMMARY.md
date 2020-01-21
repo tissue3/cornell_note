@@ -1,8 +1,6 @@
 # Table of contents
 
 * [Introduction](README.md)
-* [Test](Test/README.md)
-  * [Initial page](Test/first_attempt.md)
 * [JPEG and Neural Network](JpegNN/README.md)
   * [Progress](JpegNN/progress.md)
   * [TodoList](JpegNN/todo.md)
