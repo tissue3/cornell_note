@@ -1,1 +1,1 @@
-### ![DNN CONFIGURABLE FPGA](proposal.pdf){width=100%}
+### <img src="proposal.pdf">
