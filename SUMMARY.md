@@ -14,5 +14,5 @@
   - [Spatial](SeaShell/Run_Spatial.md)
   - [Programmability](SeaShell/Dahlia_programmability.md)
 - [Configurable DNN to FPGA](configurable_fpga_dnn/README.md)
-  - [General Idea](configurable_fpga_dnn/proposal.pdf)
+  - [General Idea](configurable_fpga_dnn/proposal.md)
   - [Progress Log](configurable_fpga_dnn/progress.md)
