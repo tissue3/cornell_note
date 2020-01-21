@@ -377,7 +377,12 @@ This document is to record things progress
   - Differential evolution is said to be better than GA, but how to get the paper?
   - Particle Swarm Optimization, Fireflys
 
+### Dec 1st
 
+- Why do we need to focus on deep learning accuracy rather than PSNR?
+- Sorted random 
+- Bayesian 
+- Do "good" qtables generalise to other testing set? How about retraining?
 
 
 
