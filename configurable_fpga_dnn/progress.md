@@ -73,6 +73,7 @@ There are some interesting paper to begin with.
     - PE(mul switches = local buffers = adder switch + 1= simple switch + 1): 168/374
     - Network: argumented reduction tree
 
-- A big issue is I don't know how to describe the structure, how elements are connected with abstraction.
+- A big issue is I don't know how to describe the structure, how components are connected with abstraction.
   - specify tree/network/systolic array?
+  - Or change the high level idea to: let user choose the design by providing the profiling results of utilization/latency/power consumption.
 

@@ -1,7 +1,7 @@
 # FuTil
 
 - FIFO architecture: <https://www.youtube.com/watch?v=Nr8q5VW-mXI>
-  - ![fifo](/Users/Cindy/Nextcloud/Cornell/research/Note/SeaShell/figure/fifo.png)
+  - ![fifo](figure/fifo.png)
   - FIFO can just keep running. 
   - Actually all components can just keep running.
 
