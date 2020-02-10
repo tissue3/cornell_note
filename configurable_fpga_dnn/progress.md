@@ -67,13 +67,21 @@ There are some interesting paper to begin with.
       - Input array/output ram: 10kb each; 
       - Accumulator buffer: 32 entries(6kb) 
       - Network: 16x32 crossbar
+  - EIE (favors sparsity)
+    - Logic dataflow:
+    - PE: 256.
+      - leadeing non-zero detection node(dynamically find non-zero elements)
+      - activation queue
+    - pointer read unit
+      - ...
   - MAERI (PE utilization, low latency favors small filter)
     - Dataflow: configurable, weight stationary
     - Prefetch buffer: 80KB
     - PE(mul switches = local buffers = adder switch + 1= simple switch + 1): 168/374
     - Network: argumented reduction tree
-
+  
 - A big issue is I don't know how to describe the structure, how components are connected with abstraction.
   - specify tree/network/systolic array?
   - Or change the high level idea to: let user choose the design by providing the profiling results of utilization/latency/power consumption.
+  - Or we can do a PE selection framework. Then the user can configure the quantity, network, size of RF, global buffer. 
 
