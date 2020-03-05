@@ -384,5 +384,14 @@ This document is to record things progress
 - Bayesian 
 - Do "good" qtables generalise to other testing set? How about retraining?
 
+### ReCoML@MLSys2020
 
+- Amir's and similar comments I received in the workshop: add JPEG as a different layer and train it. Though I've tried it before, they provided a different edge how to perform quantization.
+- Instead of multiplying back the quantization, the DCT coefficients could be first normalized and then only quantized. Then we have
+  - x = linear_transform(input)
+  - round(weight * x + bias)
+  - So, the weight doesn't need to be qtable!
+  - one problem is at some point we should recover it back, because dct does not keep enough spatial information. Similar issue with YCbCr2RGB conversion.
+  - We don't have high resolution training set. We might have to stick with ImageNet.
 
+- We may even abandon JPEG. Other image storage method like png all works.

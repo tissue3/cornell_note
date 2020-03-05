@@ -14,6 +14,7 @@
   - [Spatial](SeaShell/Run_Spatial.md)
   - [Dahlia Programmability](SeaShell/Dahlia_programmability.md)
   - [FuTil](SeaShell/futil_idea.md)
+  - [FuTil Paper Review](SeaShell/futil-paper-review.md)
 - [Configurable DNN to FPGA](configurable_fpga_dnn/README.md)
   - [General Idea](https://github.com/tissue3/cornell_note/blob/master/configurable_fpga_dnn/proposal.pdf)
   - [Progress Log](configurable_fpga_dnn/progress.md)
