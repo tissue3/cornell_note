@@ -87,32 +87,54 @@ There are some interesting paper to begin with.
 
 ### Mar 10th
 
-- Recall we have 7 parameters: X, Y (input), Fx, Fy (weight), C (channel), K (output), N (batch)
-  - PE array should be 2D: we can map arbitrary 2 parameters on it. We call them *PE mapping parameters*.
-    - Eyeriss is Fy, Y
-  - Inside each PE, the multiplication, accumulation logic should be described. 
-    - Eyeriss has output(X-Fx+1) = accumulate( Conv1d(w(Fx), input(X)) )
-  - Any parameter not for PE can be folded/tiled across PE array. We may use *f* to describe them. Notice non-PE mapping parameters need two folding factors ( *fh* and *fw*) to describe. By default PE mapping parameters are minimally folded, while other parameters are folded maximally.
-    - Eyeriss can be folded in Y, Fy, C, K, N. By default, we assume N, C and K are folded N, C and K times. Y is folded ceil(Y/PEArrayHeight) times. Same for Fy. If Y = 55 and PEArrayHeight=14, then it is folded 4 times. However, it is fine to fold it more, say, 8 times. Then it requires mapping multiple channels/output/batch (determined by *fh*) to the PE array or replications in two dimensions.
-  - Any parameter not for PE can be replicated/unrolled *r* times across PE array. Notice non-PE mapping parameters need two folding factors ( *rh* and *rw*) to describe. By default, PE array mapping parameters are maximally replicated and other parameters other minimally replicated. Replication and folding factors can be verified according to PE height/width.
-    - Eyeriss can be folded in Y, Fy, C, K, N. By default, N, C and K are replicated by 1, so that they are not replicated. Fy (=3) is replicated floor(13/3)=4 times by default. We can also replicated fewer times and match different channels, outputs and batches on it.
-  - Inside each PE, we allow flattening the loop, i.e. matching different dimensions to 1D. Only folded parameters can be flattened. Folding factor should be a multiple of flattening factor. This is to maximally reusing parameter or psum accumulation overhead (only for channel). We can check it with PE local storage size.
-    - Eyeriss can be flattened in Y (when f > 1), C, K, N. 
+- Recall we have 7 parameters: X, Y (output row/col), Fx, Fy (weight), C (channel), K (output), N (batch)
+  - PE array should be 2D: we can map arbitrary parameters on each dimension. They are quick generator for mapping scheme, which will be explained later.
+    - Eyeriss is Fy | Y (row stationary)
+    - ShiDianNao is X | Y (output stationary)
+    - SCNN is K,Fx,Fy | X,Y (input stationary)
+  - In each PE, we need to describe what it does. I am not sure how we will take use of this. Currently it will only invoke some predefined visual modules. I also want it can perform simulation, but simulation requires dedicate design of input and output. Current index representation does not work.
+    - For Eyeriss, output[0:X] = SeqAccumulate( SeqConv1D(w[0:Fx], input[0:X+Fx-1]) )
+    - For ShiDianNao,  output = SeqAccumulate( SeqConv1D(w[0:Fx\*Fy], input[i:i+Fx\*Fy]) )
+    - For SCNN, output\[k\]\[x\]\[y\] = TransformIndex( ParAccumulate(ParConv1D(w[0:F], input[0:I]))
+  - For each PE, we need number of elements in each dimension are processed at 1) a single time step, 2) logically computation, i.e.  time-multiplexed so that no mapping will performed at PE array level.
+    - For Eyeriss, at each time step, Fx inputs and Fx weight are stored. Logically, X of inputs and Fx of weights are processed. So when we map PE array, we don't consider X and Fx
+    - For ShiDianNao, at each time step, 1 input and 1 weight is stored. Logically, Fx*Fy of both inputs and weights are processed.
+    - For SCNN, at each time step, F inputs and I weights are stored. Logical computation is the same.
+  - All parameters can be flattened by *f*, i.e. mapping PE parameters > 1 to one dimension. Flatten is opposed to the assumption that all parameters calculated sequentially. Parameters do not need to be fully flattened, or be multiple of the flattening factor.
+    - Eyeriss can be flattened in Y, Fy, C, K, N. By default, Y and Fy are maximally flattened since the 2D mapping is set to Y and Fy. That is, for Y, *t* = if Y > PEArrayHeight then min(Y, int(PEArrayWidth/Fy)*PEArrayHeight) else Y. However, it is fine to flattened it less, say PEArrayHeight/2. This leaves space for flattening multiple channels/output/batch of inputs to the PE array or replications of inputs so that different weights can be mapped at the same time.
+    - For SCNN, Kc\*Fx\*Fy/F and Xt*Yt/I form the PE array height and width. Fx 
+  - All parameters can be replicated/reused *r* times across PE array. 
+    - Eyeriss can be replicated in Y, Fy, C, K, N. By default, N, C and K are replicated by 1, i.e. not replicated. Fy (=3) is replicated floor(13/3)=4 times by default, unless Y is too large to be squeezed in one pass. We can also replicated fewer times and flatten different channels, outputs and batches on it.
+  - Replication, flattening and folding factors can be verified with each other and PE height/width.
+  - Inside each PE, we can again set the three kinds of factors and verify them with local storage size. Notice flattening multiple channels does not result increase psum storage. We can display it at some point.
 
-- To sum up, I am thinking of the following language. We may even use Halide as backend. 
+- To sum up, we can describe accelerator with the following language. We may even use Halide as backend. 
 
   - ```c++
+    //Repeat this for each convolution layer
     Accel = Accelerator( X, Y, Fx, Fy, C, K, N)
-    Accel.LoadAccConfig(path_to_config_file) //load in hardware configure data
-    Accel.SetPEMappingParameter(X, Y)
+    //load in hardware configure data
+    Accel.LoadAccConfig(path_to_config_file) 
+    
+    //The auto mapper of Accel determines the default folding/ replication/ flattening factors for X, Y, Fx, Fy, C, K, N
+    Accel.SetMapping(H:"Fy", W:"Y", PE: {"Fx", "X"} ) 
+        
+    //User can also set the factor by them self, but Accel has embeded checker to determine whether the factors are valid or not, i.e. following the hardware configuration and folding/ replication/ flattening rules.
+    Accel.Height.SetFactors("X":{"t":2, "r":2}, "C":{"f":3})
+    Accel.PE.SetFactors("Y":{"t":5,"r":2})
+    Accel.verify()
+    
+    //Show the unrolling/tiling/flatten strategy with nested loops.     
+    Accel.abstraction() 
+    //one can image eventually something like this is displayed
     class PE(DefaultPE){
-        AccumulationLogic(weight, input){
-            output[1:X-Fx+1] = accumulate( Conv1d(w([1:Fx], input[1:X]) )
+        InPELogic(weight, input){
+            output[1:X-Fx+1] = accumulate( SeqConv1D(w([1:Fx], input[1:X]) )
+            //we an also do ParConv1D, which creates multiple PEs.
         }
     }
-    Accel.SetInPELogic(Logic) //The auto mapper of Accel determines the default folding/replication/flattening factors for X, Y, Fx, Fy, C, K, N
-    Accel.X.fold(6).replicate(2).flatten(3) //User can also set the factor by them self, but Accel has embeded checker to determine whether the factors are valid or not, i.e. following the hardware and folding/replication/flattening rules.
-    Accel.display() //Show the unrolling/tiling/flatten strategy with nested loops. Unrolling can be described as parallel_for.
+    //generate some mapping strategy as shown in Eyeriss paper.
+    Accel.visualize("out.png") 
     ```
 
 
