@@ -85,3 +85,38 @@ There are some interesting paper to begin with.
   - Or change the high level idea to: let user choose the design by providing the profiling results of utilization/latency/power consumption.
   - Or we can do a PE selection framework. Then the user can configure the quantity, network, size of RF, global buffer. 
 
+### Mar 10th
+
+- Recall we have 7 parameters: X, Y (input), Fx, Fy (weight), C (channel), K (output), N (batch)
+  - PE array should be 2D: we can map arbitrary 2 parameters on it. We call them *PE mapping parameters*.
+    - Eyeriss is Fy, Y
+  - Inside each PE, the multiplication, accumulation logic should be described. 
+    - Eyeriss has output(X-Fx+1) = accumulate( Conv1d(w(Fx), input(X)) )
+  - Any parameter not for PE can be folded/tiled across PE array. We may use *f* to describe them. Notice non-PE mapping parameters need two folding factors ( *fh* and *fw*) to describe. By default PE mapping parameters are minimally folded, while other parameters are folded maximally.
+    - Eyeriss can be folded in Y, Fy, C, K, N. By default, we assume N, C and K are folded N, C and K times. Y is folded ceil(Y/PEArrayHeight) times. Same for Fy. If Y = 55 and PEArrayHeight=14, then it is folded 4 times. However, it is fine to fold it more, say, 8 times. Then it requires mapping multiple channels/output/batch (determined by *fh*) to the PE array or replications in two dimensions.
+  - Any parameter not for PE can be replicated/unrolled *r* times across PE array. Notice non-PE mapping parameters need two folding factors ( *rh* and *rw*) to describe. By default, PE array mapping parameters are maximally replicated and other parameters other minimally replicated. Replication and folding factors can be verified according to PE height/width.
+    - Eyeriss can be folded in Y, Fy, C, K, N. By default, N, C and K are replicated by 1, so that they are not replicated. Fy (=3) is replicated floor(13/3)=4 times by default. We can also replicated fewer times and match different channels, outputs and batches on it.
+  - Inside each PE, we allow flattening the loop, i.e. matching different dimensions to 1D. Only folded parameters can be flattened. Folding factor should be a multiple of flattening factor. This is to maximally reusing parameter or psum accumulation overhead (only for channel). We can check it with PE local storage size.
+    - Eyeriss can be flattened in Y (when f > 1), C, K, N. 
+
+- To sum up, I am thinking of the following language. We may even use Halide as backend. 
+
+  - ```c++
+    Accel = Accelerator( X, Y, Fx, Fy, C, K, N)
+    Accel.LoadAccConfig(path_to_config_file) //load in hardware configure data
+    Accel.SetPEMappingParameter(X, Y)
+    class PE(DefaultPE){
+        AccumulationLogic(weight, input){
+            output[1:X-Fx+1] = accumulate( Conv1d(w([1:Fx], input[1:X]) )
+        }
+    }
+    Accel.SetInPELogic(Logic) //The auto mapper of Accel determines the default folding/replication/flattening factors for X, Y, Fx, Fy, C, K, N
+    Accel.X.fold(6).replicate(2).flatten(3) //User can also set the factor by them self, but Accel has embeded checker to determine whether the factors are valid or not, i.e. following the hardware and folding/replication/flattening rules.
+    Accel.display() //Show the unrolling/tiling/flatten strategy with nested loops. Unrolling can be described as parallel_for.
+    ```
+
+
+
+
+
+
