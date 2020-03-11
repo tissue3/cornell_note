@@ -100,11 +100,11 @@ There are some interesting paper to begin with.
     - For Eyeriss, at each time step, Fx inputs and Fx weight are stored. Logically, X of inputs and Fx of weights are processed. So when we map PE array, we don't consider X and Fx
     - For ShiDianNao, at each time step, 1 input and 1 weight is stored. Logically, Fx*Fy of both inputs and weights are processed.
     - For SCNN, at each time step, F inputs and I weights are stored. Logical computation is the same.
-  - All parameters can be flattened by *f*, i.e. mapping PE parameters > 1 to one dimension. Flatten is opposed to the assumption that all parameters calculated sequentially. Parameters do not need to be fully flattened, or be multiple of the flattening factor.
-    - Eyeriss can be flattened in Y, Fy, C, K, N. By default, Y and Fy are maximally flattened since the 2D mapping is set to Y and Fy. That is, for Y, *t* = if Y > PEArrayHeight then min(Y, int(PEArrayWidth/Fy)*PEArrayHeight) else Y. However, it is fine to flattened it less, say PEArrayHeight/2. This leaves space for flattening multiple channels/output/batch of inputs to the PE array or replications of inputs so that different weights can be mapped at the same time.
-    - For SCNN, Kc\*Fx\*Fy/F and Xt*Yt/I form the PE array height and width. Fx 
-  - All parameters can be replicated/reused *r* times across PE array. 
-    - Eyeriss can be replicated in Y, Fy, C, K, N. By default, N, C and K are replicated by 1, i.e. not replicated. Fy (=3) is replicated floor(13/3)=4 times by default, unless Y is too large to be squeezed in one pass. We can also replicated fewer times and flatten different channels, outputs and batches on it.
+  - When performing 2D PE array mapping, parameters can be flattened by *f*. Flatten is opposed to the assumption that all parameters calculated sequentially. Parameters do not need to be fully flattened, or be multiple of the flattening factor.
+    - Eyeriss can be flattened in Y, Fy, C, K, N. By default, Y and Fy are maximally flattened since the 2D mapping is set to Y and Fy. That is, for Y, *t* = if Y > PEArrayHeight then min(Y, int(PEArrayWidth/Fy)*PEArrayHeight)/1 else Y/1. However, it is fine to flatten it less, say PEArrayHeight/2. This leaves space for flattening multiple channels/output/batch of inputs to the PE array or replications of inputs so that different weights can be mapped at the same time.
+    - For SCNN, on one dimension, *t* = Kc\*Fx\*Fy/F, while on the other, t = Xt*Yt/I  
+  - All parameters can be replicated/reused *r* times across PE array. Again, the default version will maximally replicate parameters.
+    - Eyeriss can be replicated in Y, Fy, C, K, N. By default, N, C and K are replicated by 1, i.e. not replicated. Fy (=3) is replicated Floor(13/3)=4 times by default, unless Y is too large to be squeezed in one pass. We can also replicated fewer times and flatten different channels, outputs and batches on it.
   - Replication, flattening and folding factors can be verified with each other and PE height/width.
   - Inside each PE, we can again set the three kinds of factors and verify them with local storage size. Notice flattening multiple channels does not result increase psum storage. We can display it at some point.
 
@@ -117,7 +117,10 @@ There are some interesting paper to begin with.
     Accel.LoadAccConfig(path_to_config_file) 
     
     //The auto mapper of Accel determines the default folding/ replication/ flattening factors for X, Y, Fx, Fy, C, K, N
-    Accel.SetMapping(H:"Fy", W:"Y", PE: {"Fx", "X"} ) 
+    Param = Accel.getParameter()
+    Param.add_param({"X","Y"}:"F", 5)//take F out of X*Y. X and Y are both not fully flattened in PE level, so we can perform more flattening in PE Array level
+    PEMapping = PE(Step:(Param["Fx"], Param["Fx"]), Logic:("Fx","F"), tight=false, implementation = some function pointer) //tight=false allow perform multiplexing inside PE
+    Accel.SetPEArrayMapping(H:"Fy", W:"Y", PE: PEMapping)
         
     //User can also set the factor by them self, but Accel has embeded checker to determine whether the factors are valid or not, i.e. following the hardware configuration and folding/ replication/ flattening rules.
     Accel.Height.SetFactors("X":{"t":2, "r":2}, "C":{"f":3})
