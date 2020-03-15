@@ -106,9 +106,9 @@ There are some interesting paper to begin with.
   - All parameters can be replicated/reused *r* times across PE array. Again, the default version will maximally replicate parameters.
     - Eyeriss can be replicated in Y, Fy, C, K, N. By default, N, C and K are replicated by 1, i.e. not replicated. Fy (=3) is replicated Floor(13/3)=4 times by default, unless Y is too large to be squeezed in one pass. We can also replicated fewer times and flatten different channels, outputs and batches on it.
   - Replication, flattening and folding factors can be verified with each other and PE height/width.
-  - Inside each PE, we can again set the three kinds of factors and verify them with local storage size. Notice flattening multiple channels does not result increase psum storage. We can display it at some point.
+  - Inside each PE, we can again set the three kinds of factors and verify them with local storage size. Notice flattening multiple channels does not result in increased psum storage. We can display it at some point.
 
-- To sum up, we can describe accelerator with the following language. We may even use Halide as backend. 
+- To sum up, we can describe PE array mapping with the following pseudo code. 
 
   - ```c++
     //Repeat this for each convolution layer
@@ -141,7 +141,11 @@ There are some interesting paper to begin with.
     ```
 
 
+- For configuration, we also care **global buffer**. This can be used to calculate power consumption for activation, weights, psum accesses. More importantly, how many layers can be **fused**. 
+- Network is also important to send and receive data. A good network can send multiple data in one step. 
+  - For example, Eyeriss v1 can only send the same data at each cycle and it takes multiple cycles to send out all weight/activations for the PE array. (Bus)
+  - Eyeriss v2 came up with a way that every PE can receive data at the same time as long as they are in the same PE group (all-to-all). Data for other PE group can be transmitted with mesh network.
+  - We can provide three network patterns: **bus, all-to-all, and mesh**. We can also group PEs and routers. For each wire connecting PE and routers we need to specify bandwidth to calculate latency. 
 
-
-
+- TODO: Sparsity.
 
