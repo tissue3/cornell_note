@@ -142,10 +142,12 @@ There are some interesting paper to begin with.
 
 
 - For configuration, we also care **global buffer**. This can be used to calculate power consumption for activation, weights, psum accesses. More importantly, how many layers can be **fused**. 
-- Network is also important to send and receive data. A good network can send multiple data in one step. 
+- **Network** is also important to send and receive data. A good network can send multiple data in one step. 
   - For example, Eyeriss v1 can only send the same data at each cycle and it takes multiple cycles to send out all weight/activations for the PE array. (Bus)
   - Eyeriss v2 came up with a way that every PE can receive data at the same time as long as they are in the same PE group (all-to-all). Data for other PE group can be transmitted with mesh network.
   - We can provide three network patterns: **bus, all-to-all, and mesh**. We can also group PEs and routers. For each wire connecting PE and routers we need to specify bandwidth to calculate latency. 
 
-- TODO: Sparsity.
+- **Sparsity**
+  - Accelerator that can handle sparsity also equally distributes weight and activation into PE. So it still falls into the mapping strategy. 
+  - It really is how multiplications are handled is different from non-sparsity focused accelerator. This results in volatile PE latency though. At some point, we would like Magnolia is able to profile it, but this could be hard since sparsity focused accelerators usually have a lot of specific components in its PE. (Maybe some parts of PE have fixed latency; maybe except for multiplier, other parts just does not matter.)
 
