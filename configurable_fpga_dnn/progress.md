@@ -151,3 +151,12 @@ There are some interesting paper to begin with.
   - Accelerator that can handle sparsity also equally distributes weight and activation into PE. So it still falls into the mapping strategy. 
   - It really is how multiplications are handled is different from non-sparsity focused accelerator. This results in volatile PE latency though. At some point, we would like Magnolia is able to profile it, but this could be hard since sparsity focused accelerators usually have a lot of specific components in its PE. (Maybe some parts of PE have fixed latency; maybe except for multiplier, other parts just does not matter.)
 
+### Mar 30th
+
+- Some discussion recorded by Adrian
+  - Minor: Probably add declarations of overall input/output arrays (e.g., ifmap, ofmap, filter) at the very beginning.
+  - A slightly-more-complex version of the systolic GEMM accelerator to explore would be an “unrestricted” one, i.e., a version of the current fixed-size GEMM that can support any matrix sizes (or any matrix sizes that are powers of two, etc.).
+  - Consider making computation operations (like * and +) refer more explicitly to FU resources in PEs.
+  - There is sort of an open question about << vs. = and what constitutes “communication” that needs to have a cost charged for it. Adrian thinks that the key to answering this question might be thinking about from whose “perspective” communication is happening (e.g., communication for a PE (to the local network) is different from communication for the entire array (to the global buffer/DRAM)).
+  - Consider making the “reshaping”/dimensionality change facilities look the same for both data and PEs. We may want to talk to @Edwin Peguero who has dealt with this in HBIR to some degree.
+  - How to specify control FSMs? With an explicit FSM construct? Something fancier?
