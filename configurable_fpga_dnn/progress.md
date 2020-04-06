@@ -160,3 +160,10 @@ There are some interesting paper to begin with.
   - There is sort of an open question about << vs. = and what constitutes “communication” that needs to have a cost charged for it. Adrian thinks that the key to answering this question might be thinking about from whose “perspective” communication is happening (e.g., communication for a PE (to the local network) is different from communication for the entire array (to the global buffer/DRAM)).
   - Consider making the “reshaping”/dimensionality change facilities look the same for both data and PEs. We may want to talk to @Edwin Peguero who has dealt with this in HBIR to some degree.
   - How to specify control FSMs? With an explicit FSM construct? Something fancier?
+
+### April 3th
+
+- In the future, Chris mentioned we could implement both high level and low level abstraction to describe hardware and software. They are essentially the same language with the same grammar, but the high level language faces software user and low level language faces hardware designer who actually implement it. We can prove the equality with 1)simulation 2) SMT.
+- Instead of implementing a new language, we can do embedded language, by generating runnable code with self defined classes and use the classes to create object and emitting code. A good place to start with is LMS, where `Rep` keyword can make evaluation to happens latter (contained in emitted codes) and `unit` lifts normal method for latter evaluation.
+  - Example: https://github.com/julienrf/lms-tutorial/wiki
+  - 
