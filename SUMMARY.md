@@ -19,3 +19,5 @@
   - [General Idea](https://github.com/tissue3/cornell_note/blob/master/configurable_fpga_dnn/proposal.pdf)
   - [Progress Log](configurable_fpga_dnn/progress.md)
 
+- [Random](Random/README.md)
+  - [ubuntu](Random/reinstall-linux.md)
