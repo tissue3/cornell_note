@@ -17,7 +17,8 @@
   - [FuTil Paper Review](SeaShell/futil-paper-review.md)
 - [Configurable DNN to FPGA](configurable_fpga_dnn/README.md)
   - [General Idea](https://github.com/tissue3/cornell_note/blob/master/configurable_fpga_dnn/proposal.pdf)
-  - [Progress Log](configurable_fpga_dnn/progress.md)
-
+  - [Event Queue Dialect (MLIR)](configurable_fpga_dnn/equeue-dialect.md)
+- [Progress Log](configurable_fpga_dnn/progress.md)
+  
 - [Random](Random/README.md)
   - [ubuntu](Random/reinstall-linux.md)
